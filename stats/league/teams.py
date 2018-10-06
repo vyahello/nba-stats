@@ -1,4 +1,27 @@
-class Atlanta:
+from abc import ABC, abstractmethod
+from functools import lru_cache
+from typing import Iterator
+
+
+class Team(ABC):
+    """Abstract interface for some teams."""
+
+    pass
+
+
+class Teams(ABC):
+    """Abstract interface for some teams."""
+
+    @abstractmethod
+    def __next__(self) -> Team:
+        pass
+
+    @abstractmethod
+    def __iter__(self) -> Iterator[Team]:
+        pass
+
+
+class Atlanta(Team):
     """Represent `Atlanta Hawks` nba team."""
 
     full_name: str = 'Atlanta Hawks'
@@ -8,7 +31,7 @@ class Atlanta:
     url_name: str = 'hawks'
 
 
-class Boston:
+class Boston(Team):
     """Represent `Boston Celtics` nba team."""
 
     full_name: str = 'Boston Celtics'
@@ -18,7 +41,7 @@ class Boston:
     url_name: str = 'celtics'
 
 
-class Brooklyn:
+class Brooklyn(Team):
     """Represent `Brooklyn Nets` nba team."""
 
     full_name: str = 'Brooklyn Nets'
@@ -28,7 +51,7 @@ class Brooklyn:
     url_name: str = 'nets'
 
 
-class Charlotte:
+class Charlotte(Team):
     """Represent `Charlotte Hornets` nba team."""
 
     full_name: str = 'Charlotte Hornets'
@@ -38,7 +61,7 @@ class Charlotte:
     url_name: str = 'hornets'
 
 
-class Chicago:
+class Chicago(Team):
     """Represent `Chicago Bulls` nba team."""
 
     full_name: str = 'Chicago Bulls'
@@ -48,7 +71,7 @@ class Chicago:
     url_name: str = 'bulls'
 
 
-class Cleveland:
+class Cleveland(Team):
     """Represent `Cleveland Cavaliers` nba team."""
 
     full_name: str = 'Cleveland Cavaliers'
@@ -58,7 +81,7 @@ class Cleveland:
     url_name: str = 'cavaliers'
 
 
-class Dallas:
+class Dallas(Team):
     """Represent `Dallas Mavericks` nba team."""
 
     full_name: str = 'Dallas Mavericks'
@@ -68,7 +91,7 @@ class Dallas:
     url_name: str = 'mavericks'
 
 
-class Denver:
+class Denver(Team):
     """Represent `Denver Nuggets` nba team."""
 
     full_name: str = 'Denver Nuggets'
@@ -78,7 +101,7 @@ class Denver:
     url_name: str = 'nuggets'
 
 
-class Detroit:
+class Detroit(Team):
     """Represent `Detroit Pistons` nba team."""
 
     full_name: str = 'Detroit Pistons'
@@ -88,7 +111,7 @@ class Detroit:
     url_name: str = 'pistons'
 
 
-class GoldenState:
+class GoldenState(Team):
     """Represent `Golden State` nba team."""
 
     full_name: str = 'Golden State'
@@ -98,7 +121,7 @@ class GoldenState:
     url_name: str = 'warriors'
 
 
-class Houston:
+class Houston(Team):
     """Represent `Houston Rockets` nba team."""
 
     full_name: str = 'Houston Rockets'
@@ -108,7 +131,7 @@ class Houston:
     url_name: str = 'rockets'
 
 
-class Indiana:
+class Indiana(Team):
     """Represent `Indiana Pacers` nba team."""
 
     full_name: str = 'Indiana Pacers'
@@ -118,7 +141,7 @@ class Indiana:
     url_name: str = 'pacers'
 
 
-class Clippers:
+class Clippers(Team):
     """Represent `LA Clippers` nba team."""
 
     full_name: str = 'LA Clippers'
@@ -128,7 +151,7 @@ class Clippers:
     url_name: str = 'clippers'
 
 
-class Lakers:
+class Lakers(Team):
     """Represent `Los Angeles Lakers` nba team."""
 
     full_name: str = 'Los Angeles Lakers'
@@ -138,7 +161,7 @@ class Lakers:
     url_name: str = 'lakers'
 
 
-class Memphis:
+class Memphis(Team):
     """Represent `Memphis Grizzlies` nba team."""
 
     full_name: str = 'Memphis Grizzlies'
@@ -148,7 +171,7 @@ class Memphis:
     url_name: str = 'grizzlies'
 
 
-class Miami:
+class Miami(Team):
     """Represent `Miami Heat` nba team."""
 
     full_name: str = 'Memphis Grizzlies'
@@ -158,7 +181,7 @@ class Miami:
     url_name: str = 'heat'
 
 
-class Milwaukee:
+class Milwaukee(Team):
     """Represent `Milwaukee Bucks` nba team."""
 
     full_name: str = 'Milwaukee Bucks'
@@ -168,7 +191,7 @@ class Milwaukee:
     url_name: str = 'bucks'
 
 
-class Minnesota:
+class Minnesota(Team):
     """Represent `Minnesota Timberwolves` nba team."""
 
     full_name: str = 'Minnesota Timberwolves'
@@ -178,7 +201,7 @@ class Minnesota:
     url_name: str = 'timberwolves'
 
 
-class NewOrleans:
+class NewOrleans(Team):
     """Represent `New Orleans Pelicans` nba team."""
 
     full_name: str = 'New Orleans Pelicans'
@@ -188,7 +211,7 @@ class NewOrleans:
     url_name: str = 'pelicans'
 
 
-class NewYork:
+class NewYork(Team):
     """Represent `New York Knicks` nba team."""
 
     full_name: str = 'New York Knicks'
@@ -198,7 +221,7 @@ class NewYork:
     url_name: str = 'knicks'
 
 
-class OklahomaCity:
+class OklahomaCity(Team):
     """Represent `Oklahoma City` nba team."""
 
     full_name: str = 'Oklahoma City Thunder'
@@ -208,7 +231,7 @@ class OklahomaCity:
     url_name: str = 'thunder'
 
 
-class Orlando:
+class Orlando(Team):
     """Represent `Orlando Magic` nba team."""
 
     full_name: str = 'Orlando Magic'
@@ -218,7 +241,7 @@ class Orlando:
     url_name: str = 'magic'
 
 
-class Philadelphia:
+class Philadelphia(Team):
     """Represent `Philadelphia 76ers` nba team."""
 
     full_name: str = 'Philadelphia 76ers'
@@ -228,7 +251,7 @@ class Philadelphia:
     url_name: str = 'sixers'
 
 
-class Phoenix:
+class Phoenix(Team):
     """Represent `Phoenix Suns` nba team."""
 
     full_name: str = 'Phoenix Suns'
@@ -238,7 +261,7 @@ class Phoenix:
     url_name: str = 'suns'
 
 
-class Portland:
+class Portland(Team):
     """Represent `Portland Trail Blazers` nba team."""
 
     full_name: str = 'Portland Trail Blazers'
@@ -248,7 +271,7 @@ class Portland:
     url_name: str = 'blazers'
 
 
-class Sacramento:
+class Sacramento(Team):
     """Represent `Sacramento Kings` nba team."""
 
     full_name: str = 'Sacramento Kings'
@@ -258,7 +281,7 @@ class Sacramento:
     url_name: str = 'kings'
 
 
-class SanAntonio:
+class SanAntonio(Team):
     """Represent `San Antonio Spurs` nba team."""
 
     full_name: str = 'San Antonio Spurs'
@@ -268,7 +291,7 @@ class SanAntonio:
     url_name: str = 'spurs'
 
 
-class Toronto:
+class Toronto(Team):
     """Represent `Toronto Raptors` nba team."""
 
     full_name: str = 'Toronto Raptors'
@@ -278,7 +301,7 @@ class Toronto:
     url_name: str = 'raptors'
 
 
-class Utah:
+class Utah(Team):
     """Represent `Utah Jazz` nba team."""
 
     full_name: str = 'Utah Jazz'
@@ -288,7 +311,7 @@ class Utah:
     url_name: str = 'jazz'
 
 
-class Washington:
+class Washington(Team):
     """Represent `Washington Wizards` nba team."""
 
     full_name: str = 'Washington Wizards'
@@ -296,3 +319,26 @@ class Washington:
     team_id: str = '1610612764'
     nick_name: str = 'Wizards'
     url_name: str = 'wizards'
+
+
+class NbaTeams(Teams):
+    """Concrete interface for nba teams."""
+
+    def __init__(self) -> None:
+
+        @lru_cache()
+        def teams() -> Iterator[Team]:
+            yield from (
+                Atlanta, Boston, Brooklyn, Charlotte, Chicago, Cleveland, Dallas, Denver, Detroit,
+                GoldenState, Houston, Indiana, Clippers, Lakers, Memphis, Milwaukee, Minnesota,
+                NewOrleans, NewYork, OklahomaCity, Orlando, Philadelphia, Phoenix, Portland,
+                Sacramento, SanAntonio, Toronto, Utah, Washington
+            )
+
+        self._teams = teams
+
+    def __next__(self) -> Team:
+        return next(self._teams())
+
+    def __iter__(self) -> Iterator[Team]:
+        return self
