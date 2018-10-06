@@ -7,7 +7,7 @@ Telegram bot that serves latest nba games stats.
 - configure Git for the first time after cloning with your name and email
   ```bash
   git config --local user.name "Volodymyr Yahello"
-  git config --local user.email "vjagello93@gmail.com"
+  git config --local user.email "vyahello@gmail.com"
   ```
 - `python3+` is required to run the code
 - run `pip install -r requirements.txt` to install all required python dependencies
