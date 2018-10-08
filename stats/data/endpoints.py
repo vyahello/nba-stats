@@ -20,3 +20,5 @@ class Scoreboard(Endpoint):
 
     def as_dict(self) -> Dict[Any, Any]:
         return self._request.get().as_dict()
+
+

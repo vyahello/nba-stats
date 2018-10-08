@@ -1,5 +1,5 @@
 from typing import Any, Tuple
-from stats.support.types import String
+from stats.types import String
 
 
 class Url(String):
