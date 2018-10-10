@@ -1,17 +1,10 @@
 from datetime import date, timedelta
 from abc import ABC, abstractmethod
+from stats.support.tools.format import FormatTime
 
 
-class Format(ABC):
-    """Represent abstraction for formatting."""
-    
-    @abstractmethod
-    def as_str(self) -> str:
-        pass
-
-
-class DateStamp(ABC):
-    """Represent abstraction of date stamp interface."""
+class Date(ABC):
+    """Represent abstraction of date interface."""
 
     @abstractmethod
     def today(self) -> str:
@@ -26,21 +19,10 @@ class DateStamp(ABC):
         pass
 
 
-class FormatTime(Format):
-    """Represent date time formatter."""
-
-    def __init__(self, dt: date, fmt: str) -> None:
-        self._dt = dt
-        self._fmt: str = fmt
-
-    def as_str(self) -> str:
-        return self._dt.strftime(self._fmt)
-
-
-class Date(DateStamp):
+class DateStamp(Date):
     """Represent date time object."""
 
-    def __init__(self, fmt: str = '%m%d%y', days: int = 1) -> None:
+    def __init__(self, fmt: str = '%Y%m%d', days: int = 1) -> None:
         self._fmt: str = fmt
         self._today: date = date.today()
         self._diff: timedelta = timedelta(days)
@@ -49,7 +31,7 @@ class Date(DateStamp):
         return FormatTime(self._today, self._fmt).as_str()
 
     def yesterday(self) -> str:
-        return FormatTime(self._today-self._diff, self._fmt).as_str()
+        return FormatTime(self._today - self._diff, self._fmt).as_str()
 
     def tomorrow(self) -> str:
-        return FormatTime(self._today+self._diff, self._fmt).as_str()
+        return FormatTime(self._today + self._diff, self._fmt).as_str()
