@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Any
 from stats.data.endpoints import Endpoint, UnifiedEndpoint
-from stats.types import StampTime
+from stats.support.tools.date import StampTime
 
 
 class Scoreboard(ABC):

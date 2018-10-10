@@ -1,6 +1,22 @@
+from abc import ABC, abstractmethod
 from datetime import date, timedelta
 from stats.support.tools.format import FormatTime
-from stats.types import StampTime
+
+
+class StampTime(ABC):
+    """Represent abstraction of time stamp interface."""
+
+    @abstractmethod
+    def today(self) -> str:
+        pass
+
+    @abstractmethod
+    def yesterday(self) -> str:
+        pass
+
+    @abstractmethod
+    def tomorrow(self) -> str:
+        pass
 
 
 class Date(StampTime):
