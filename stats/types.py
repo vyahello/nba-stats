@@ -7,3 +7,19 @@ class String(ABC):
     @abstractmethod
     def __str__(self) -> str:
         pass
+
+
+class StampTime(ABC):
+    """Represent abstraction of time stamp interface."""
+
+    @abstractmethod
+    def today(self) -> str:
+        pass
+
+    @abstractmethod
+    def yesterday(self) -> str:
+        pass
+
+    @abstractmethod
+    def tomorrow(self) -> str:
+        pass
