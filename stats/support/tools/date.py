@@ -10,6 +10,22 @@ class Format(ABC):
         pass
 
 
+class DateStamp(ABC):
+    """Represent abstraction of date stamp interface."""
+
+    @abstractmethod
+    def today(self) -> str:
+        pass
+
+    @abstractmethod
+    def yesterday(self) -> str:
+        pass
+
+    @abstractmethod
+    def tomorrow(self) -> str:
+        pass
+
+
 class FormatTime(Format):
     """Represent date time formatter."""
 
@@ -21,7 +37,7 @@ class FormatTime(Format):
         return self._dt.strftime(self._fmt)
 
 
-class Date:
+class Date(DateStamp):
     """Represent date time object."""
 
     def __init__(self, fmt: str = '%m%d%y', days: int = 1) -> None:
