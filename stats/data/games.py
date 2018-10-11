@@ -12,6 +12,10 @@ class Game(ABC):
         pass
 
     @abstractmethod
+    def highlight(self) -> str:
+        pass
+
+    @abstractmethod
     def tags(self) -> str:
         pass
 
@@ -41,6 +45,9 @@ class NbaGame(Game):
 
     def id_(self) -> str:
         return self._data['gameId']
+
+    def highlight(self) -> str:
+        return self._data['nugget']['text']
 
     def tags(self) -> str:
         return self._data['tags'][0]
