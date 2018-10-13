@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
-from typing import List, Any
-from stats.data.endpoints import Endpoint, UnifiedEndpoint
+from typing import List, Any, Callable
+from stats.data.endpoints import UnifiedEndpoint
 from stats.support.tools.date import StampTime
+from stats.support.tools.text import Text
 
 
 class Scoreboard(ABC):
@@ -24,16 +25,17 @@ class _UnifiedScoreboard(Scoreboard):
     """Represent specific scoreboard object."""
 
     def __init__(self, date: str) -> None:
-        self._scoreboard: Endpoint = UnifiedEndpoint(date, '/scoreboard.json')
+        self._date = date
+        self._scoreboard: Callable = lambda: UnifiedEndpoint(''.join(date.split('-')), '/scoreboard.json')
 
     def date(self) -> str:
-        return self._scoreboard.as_dict()['_internal']['pubDateTime'].split()[0]
+        return self._date
 
     def num_games(self) -> int:
-        return self._scoreboard.as_dict()['numGames']
+        return self._scoreboard().as_dict()['numGames']
 
     def games(self) -> List[Any]:
-        return self._scoreboard.as_dict()['games']
+        return self._scoreboard().as_dict()['games']
 
 
 class TodayScoreboard(Scoreboard):
@@ -82,3 +84,21 @@ class TomorrowScoreboard(Scoreboard):
 
     def games(self) -> List[Any]:
         return self._tomorrow.games()
+
+
+class CustomScoreboard(Scoreboard):
+    """Custom scoreboard object endpoint data set."""
+
+    def __init__(self, date: StampTime, day: Text) -> None:
+        self._date = date
+        self._day = day
+        self._custom = lambda: _UnifiedScoreboard(date.custom(day.substitute(pattern='-+', replace='')))
+
+    def date(self) -> str:
+        return self._date.custom(self._day.get())
+
+    def num_games(self) -> int:
+        return self._custom().num_games()
+
+    def games(self) -> List[Any]:
+        return self._custom().games()

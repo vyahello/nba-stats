@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from functools import lru_cache
 from typing import Dict, Any, Callable
 from stats.bot.handler import BotHandler, Handler
 from stats.support.server import requests
@@ -32,6 +33,7 @@ class BotAnswer(Answer):
 
     def __init__(self, request: requests.Request) -> None:
 
+        @lru_cache()
         def _req() -> Dict[Any, Any]:
             return request.as_dict()['message']
 
@@ -47,12 +49,12 @@ class BotAnswer(Answer):
 class BotMessage(Message):
     """A message of a bot."""
 
-    _token: str = '573378765:AAETAPyosmIOs_6Ki_LRDezfnPbS6sFV4Ko'
+    _api_token: str = '674111678:AAHFLwhuM4_OmJ8CT0vrXmY5cYGOYanQle4'
 
-    def __init__(self, chat_id: int, source: str) -> None:
+    def __init__(self, chat_id: int, user_input: str) -> None:
         self._chat_id: int = chat_id
-        self._handler: Handler = BotHandler(source)
-        self._request: Request = BotRequest(Url('api.telegram.org/bot', self._token, '/sendMessage'))
+        self._handler: Handler = BotHandler(user_input)
+        self._request: Request = BotRequest(Url('https://api.telegram.org', f'bot{self._api_token}', 'sendMessage'))
 
     def send(self) -> Response:
         return self._request.post({'chat_id': self._chat_id, 'text': self._handler.text()})

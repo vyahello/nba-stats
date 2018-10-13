@@ -1,9 +1,10 @@
 from abc import abstractmethod, ABC
 from typing import Type, Callable
 from stats.data.games import NbaGames, Games
-from stats.data.scoreboard import YesterdayScoreboard, TodayScoreboard, TomorrowScoreboard
+from stats.data.scoreboard import YesterdayScoreboard, TodayScoreboard, TomorrowScoreboard, CustomScoreboard
 from stats.league.scoreboard.info import GamesScoresInfo
 from stats.support.tools.date import StampTime
+from stats.support.tools.text import InputText
 
 
 class BoxScore(ABC):
@@ -29,6 +30,10 @@ class BoxScores(ABC):
     def tomorrow(self) -> BoxScore:
         pass
 
+    @abstractmethod
+    def custom(self, day: str) -> BoxScore:
+        pass
+
 
 class YesterdayBoxScore(BoxScore):
     """Represent yestarday's scores for a set of games."""
@@ -38,7 +43,7 @@ class YesterdayBoxScore(BoxScore):
         self._info = games_info(self._games)
 
     def show(self) -> str:
-        return f'{len(self._games)} games were played on {self._games.date()}\n {self._info.display()}'
+        return f'{len(self._games)} games were played on {self._games.date()}\n\n {self._info.retrieve()}'
 
 
 class TodayBoxScore(BoxScore):
@@ -49,7 +54,7 @@ class TodayBoxScore(BoxScore):
         self._info = games_info(self._games)
 
     def show(self) -> str:
-        return f'{len(self._games)} games are played on {self._games.date()}\n {self._info.display()}'
+        return f'{len(self._games)} games are played on {self._games.date()}\n\n {self._info.retrieve()}'
 
 
 class TomorrowBoxScore(BoxScore):
@@ -60,7 +65,19 @@ class TomorrowBoxScore(BoxScore):
         self._info = games_info(self._games)
 
     def show(self) -> str:
-        return f'{len(self._games)} games will be played on {self._games.date()}\n {self._info.display()}'
+        return f'{len(self._games)} games will be played on {self._games.date()}\n\n {self._info.retrieve()}'
+
+
+class CustomBoxScore(BoxScore):
+    """Represent custom scores for a set of games."""
+
+    def __init__(self, date: StampTime, day: str, games_info: Callable) -> None:
+        self._day = day
+        self._games: Games = NbaGames(CustomScoreboard(date, InputText(day)))
+        self._info = games_info(self._games)
+
+    def show(self) -> str:
+        return f'{len(self._games)} game(s) on {self._day}\n\n {self._info.retrieve()}'
 
 
 class NbaBoxScores(BoxScores):
@@ -70,6 +87,7 @@ class NbaBoxScores(BoxScores):
         self._yesterday: BoxScore = YesterdayBoxScore(date, games_info)
         self._today: BoxScore = TodayBoxScore(date, games_info)
         self._tomorrow: BoxScore = TomorrowBoxScore(date, games_info)
+        self._custom: Callable[[str], BoxScore] = lambda day: CustomBoxScore(date, day, games_info)
 
     def yesterday(self) -> BoxScore:
         return self._yesterday
@@ -79,3 +97,6 @@ class NbaBoxScores(BoxScores):
 
     def tomorrow(self) -> BoxScore:
         return self._tomorrow
+
+    def custom(self, day: str) -> BoxScore:
+        return self._custom(day)

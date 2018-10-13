@@ -3,6 +3,7 @@ from functools import lru_cache
 from typing import Dict, Any, Iterator
 from stats.data.scoreboard import Scoreboard
 from stats.data.teams import Teams, NbaTeams
+from stats.types import NotAvailable
 
 
 class Game(ABC):
@@ -56,12 +57,12 @@ class NbaGame(Game):
         return self._data['gameId']
 
     def highlight(self) -> str:
-        return self._data['nugget']['text']
+        return str(NotAvailable(self._data['nugget']['text']))
 
     def period(self) -> str:
         return self._data['tags'][0]
 
-    def teams(self) -> NbaTeams:
+    def teams(self) -> Teams:
         return self._teams
 
 
@@ -89,4 +90,3 @@ class NbaGames(Games):
 
     def date(self) -> str:
         return self._scoreboard.date()
-

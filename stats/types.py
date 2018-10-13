@@ -13,5 +13,17 @@ class Information(ABC):
     """Abstract interface for some information object."""
 
     @abstractmethod
-    def display(self) -> str:
+    def retrieve(self) -> str:
         pass
+
+
+class NotAvailable(String):
+    """Represent not available string if it is empty."""
+
+    def __init__(self, data: str = '') -> None:
+        self._data = data
+
+    def __str__(self) -> str:
+        if not self._data:
+            return 'N/A'
+        return self._data

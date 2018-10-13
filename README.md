@@ -1,6 +1,12 @@
 # NBA games statistics telegram bot
 Telegram bot that serves latest nba games stats.
 
+## Run an NBA stats telegram bot
+Run script from the root directory of the project:
+```bash
+~ python bot.py
+```
+
 ## Contributing
 
 - clone the repository

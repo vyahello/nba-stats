@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any, Iterable
+from typing import Dict, Any, Iterable
+from stats.types import NotAvailable
 
 
 class Score(ABC):
@@ -46,7 +47,7 @@ class Team(ABC):
         pass
 
     @abstractmethod
-    def score(self) -> int:
+    def score(self) -> str:
         pass
 
     @abstractmethod
@@ -66,27 +67,36 @@ class Teams(ABC):
         pass
 
 
+class _SaveScores:
+    """Decorate save scores object."""
+
+    def __init__(self, line_score: Dict) -> None:
+        self._line_score = line_score
+
+    def by_quarter(self, quarter: int) -> str:
+        try:
+            return self._line_score[quarter]['score']
+        except IndexError:
+            return str(NotAvailable())
+
+
 class _LineScore(Score):
     """Linescore of a team."""
 
-    def __init__(self, line_score: List) -> None:
-
-        def score(quarter: int) -> str:
-            return line_score[quarter]['score']
-
-        self._score = score
+    def __init__(self, line_score: Dict) -> None:
+        self._score = _SaveScores(line_score)
 
     def first_quarter(self) -> str:
-        return self._score(0)
+        return self._score.by_quarter(0)
 
     def second_quarter(self) -> str:
-        return self._score(1)
+        return self._score.by_quarter(1)
 
     def third_quarter(self) -> str:
-        return self._score(2)
+        return self._score.by_quarter(2)
 
     def fourth_quarter(self) -> str:
-        return self._score(3)
+        return self._score.by_quarter(3)
 
     def all(self) -> Iterable[str]:
         return (
@@ -115,17 +125,11 @@ class NbaTeam(Team):
     def loss(self) -> str:
         return self._data['loss']
 
-    def score(self) -> int:
-        return int(self._data['score'])
+    def score(self) -> str:
+        return str(NotAvailable(self._data['score']))
 
     def line_score(self) -> _LineScore:
         return _LineScore(self._data['linescore'])
-
-    def __lt__(self, team: Team) -> bool:
-        return self.score() < team.score()
-
-    def __gt__(self, team: Team) -> bool:
-        return self.score() > team.score()
 
 
 class NbaTeams(Teams):

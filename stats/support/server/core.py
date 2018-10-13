@@ -18,7 +18,7 @@ class Server(ABC):
 class WebServer(Server):
     """Represent web server."""
 
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str = __name__) -> None:
         self._app: Flask = Flask(name)
 
     def route(self, path: str, methods: Iterable[str]) -> Callable[..., Any]:
