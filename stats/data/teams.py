@@ -42,7 +42,7 @@ class Team:
         pass
 
     @abstractmethod
-    def score(self) -> str:
+    def score(self) -> int:
         pass
 
     @abstractmethod
@@ -101,11 +101,17 @@ class NbaTeam(Team):
     def loss(self) -> str:
         return self._data['loss']
 
-    def score(self) -> str:
-        return self._data['score']
+    def score(self) -> int:
+        return int(self._data['score'])
 
     def line_score(self) -> _LineScore:
         return _LineScore(self._data['linescore'])
+
+    def __lt__(self, team: Team) -> bool:
+        return self.score() < team.score()
+
+    def __gt__(self, team: Team) -> bool:
+        return self.score() > team.score()
 
 
 class NbaTeams(Teams):

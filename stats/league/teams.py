@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from functools import lru_cache
 from typing import Iterator
 
 
@@ -324,6 +325,8 @@ class NbaTeams(Teams):
     """Concrete interface for nba teams."""
 
     def __init__(self) -> None:
+
+        @lru_cache()
         def teams() -> Iterator[Team]:
             yield from (
                 Atlanta, Boston, Brooklyn, Charlotte, Chicago, Cleveland, Dallas, Denver, Detroit,
