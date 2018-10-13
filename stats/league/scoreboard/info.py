@@ -1,19 +1,9 @@
-from abc import ABC, abstractmethod
-from stats.data.games import NbaGames, Game, Games
-from stats.data.scoreboard import YesterdayScoreboard
+from stats.data.games import Game, Games
 from stats.data.teams import Team
-from stats.support.tools.date import StampTime
+from stats.types import Information
 
 
-class Info(ABC):
-    """Abstract interface for some information object."""
-
-    @abstractmethod
-    def display(self) -> str:
-        pass
-
-
-class _TeamsInfo(Info):
+class _TeamsInfo(Information):
     """Represent teams info about the win, loss and score dependency.
     Sample: ``ORL(2:3) vs SAS(3:2) 81 - 100``
     """
@@ -28,7 +18,7 @@ class _TeamsInfo(Info):
                f'{self._home_team.score()} - {self._visit_team.score()}'
 
 
-class _LineScoreInfo(Info):
+class _LineScoreInfo(Information):
     """Represent team linescores info per quarter.
     Sample: ``1st: 10 2nd: 10 3rd: 10 4th: 10 - 1st: 10 2nd: 10 3rd: 10 4th: 10``
     """
@@ -40,7 +30,7 @@ class _LineScoreInfo(Info):
         return '1st:{} 2nd:{} 3rd:{} 4th:{}'.format(*self._team.line_score().all())
 
 
-class GameScoresInfo(Info):
+class _GameScoresInfo(Information):
     """Represent game scores for a particular game.
     Sample:
     ```☆ ORL(2:3) vs SAS(3:2) 81 - 100
@@ -64,23 +54,12 @@ class GameScoresInfo(Info):
                f'\n Linescores {self._home_lines(hteam).display()} - {self._visit_lines(vteam).display()}'
 
 
-class GamesScoresInfo(Info):
-    """Represent games scores for a multiple games."""
+class GamesScoresInfo(Information):
+    """Represent games scores for multiple games."""
 
     def __init__(self, games: Games) -> None:
         self._games = games
-        self._info = lambda game: GameScoresInfo(game)
+        self._info = lambda game: _GameScoresInfo(game)
 
     def display(self) -> str:
         return '\n\n'.join(map(lambda game: self._info(game).display(), self._games))
-
-
-class YesterdayGameScores(Info):
-    """Represent yestarday's scores for a set of games."""
-
-    def __init__(self, date: StampTime) -> None:
-        self._games = NbaGames(YesterdayScoreboard(date))
-        self._games_info = GamesScoresInfo(self._games)
-
-    def display(self) -> str:
-        return f'{len(self._games)} games were played on {self._games.date()}\n {self._games_info.display()}'

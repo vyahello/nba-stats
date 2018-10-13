@@ -7,3 +7,11 @@ class String(ABC):
     @abstractmethod
     def __str__(self) -> str:
         pass
+
+
+class Information(ABC):
+    """Abstract interface for some information object."""
+
+    @abstractmethod
+    def display(self) -> str:
+        pass
