@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from functools import lru_cache
 from typing import Dict, Any, Iterator
 from stats.data.scoreboard import Scoreboard
-from stats.data.teams import NbaTeams
+from stats.data.teams import Teams, NbaTeams
 
 
 class Game(ABC):
@@ -17,11 +17,11 @@ class Game(ABC):
         pass
 
     @abstractmethod
-    def tags(self) -> str:
+    def period(self) -> str:
         pass
 
     @abstractmethod
-    def teams(self) -> NbaTeams:
+    def teams(self) -> Teams:
         pass
 
 
@@ -40,6 +40,10 @@ class Games(ABC):
     def __len__(self) -> int:
         pass
 
+    @abstractmethod
+    def date(self) -> str:
+        pass
+
 
 class NbaGame(Game):
     """Represent specific game implementation."""
@@ -54,7 +58,7 @@ class NbaGame(Game):
     def highlight(self) -> str:
         return self._data['nugget']['text']
 
-    def tags(self) -> str:
+    def period(self) -> str:
         return self._data['tags'][0]
 
     def teams(self) -> NbaTeams:
@@ -82,3 +86,7 @@ class NbaGames(Games):
 
     def __len__(self) -> int:
         return self._scoreboard.num_games()
+
+    def date(self) -> str:
+        return self._scoreboard.date()
+

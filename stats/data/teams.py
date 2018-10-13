@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Iterable
 
 
 class Score(ABC):
@@ -21,8 +21,12 @@ class Score(ABC):
     def fourth_quarter(self) -> str:
         pass
 
+    @abstractmethod
+    def all(self) -> str:
+        pass
 
-class Team:
+
+class Team(ABC):
     """Abstract interface for team object."""
 
     @abstractmethod
@@ -50,12 +54,14 @@ class Team:
         pass
 
 
-class Teams:
+class Teams(ABC):
     """Abstract interface for team pair."""
 
+    @abstractmethod
     def home_team(self) -> Team:
         pass
 
+    @abstractmethod
     def visit_team(self) -> Team:
         pass
 
@@ -71,16 +77,24 @@ class _LineScore(Score):
         self._score = score
 
     def first_quarter(self) -> str:
-        return self._score(1)
+        return self._score(0)
 
     def second_quarter(self) -> str:
-        return self._score(2)
+        return self._score(1)
 
     def third_quarter(self) -> str:
-        return self._score(3)
+        return self._score(2)
 
     def fourth_quarter(self) -> str:
-        return self._score(4)
+        return self._score(3)
+
+    def all(self) -> Iterable[str]:
+        return (
+            self.first_quarter(),
+            self.second_quarter(),
+            self.third_quarter(),
+            self.fourth_quarter()
+        )
 
 
 class NbaTeam(Team):
@@ -120,8 +134,8 @@ class NbaTeams(Teams):
     def __init__(self, data: Dict[Any, Any]) -> None:
         self._data = data
 
-    def home_team(self) -> NbaTeam:
+    def home_team(self) -> Team:
         return NbaTeam(self._data['hTeam'])
 
-    def visit_team(self) -> NbaTeam:
+    def visit_team(self) -> Team:
         return NbaTeam(self._data['vTeam'])

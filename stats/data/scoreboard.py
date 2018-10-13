@@ -8,6 +8,10 @@ class Scoreboard(ABC):
     """Represent abstract interface for a scoreboard."""
 
     @abstractmethod
+    def date(self) -> str:
+        pass
+
+    @abstractmethod
     def num_games(self) -> int:
         pass
 
@@ -22,6 +26,9 @@ class _UnifiedScoreboard(Scoreboard):
     def __init__(self, date: str) -> None:
         self._scoreboard: Endpoint = UnifiedEndpoint(date, '/scoreboard.json')
 
+    def date(self) -> str:
+        return self._scoreboard.as_dict()['_internal']['pubDateTime'].split()[0]
+
     def num_games(self) -> int:
         return self._scoreboard.as_dict()['numGames']
 
@@ -34,6 +41,9 @@ class TodayScoreboard(Scoreboard):
 
     def __init__(self, date: StampTime) -> None:
         self._today: Scoreboard = _UnifiedScoreboard(date.today())
+
+    def date(self) -> str:
+        return self._today.date()
 
     def num_games(self) -> int:
         return self._today.num_games()
@@ -48,6 +58,9 @@ class YesterdayScoreboard(Scoreboard):
     def __init__(self, date: StampTime) -> None:
         self._yesterday: Scoreboard = _UnifiedScoreboard(date.yesterday())
 
+    def date(self) -> str:
+        return self._yesterday.date()
+
     def num_games(self) -> int:
         return self._yesterday.num_games()
 
@@ -60,6 +73,9 @@ class TomorrowScoreboard(Scoreboard):
 
     def __init__(self, date: StampTime) -> None:
         self._tomorrow: Scoreboard = _UnifiedScoreboard(date.tomorrow())
+
+    def date(self) -> str:
+        return self._tomorrow.date()
 
     def num_games(self) -> int:
         return self._tomorrow.num_games()
