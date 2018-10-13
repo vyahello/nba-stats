@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from typing import Dict, Any, Callable
-
 from stats.bot.handler import BotHandler, Handler
 from stats.support.server import requests
 from stats.support.web_api.requests import Request, BotRequest
@@ -34,24 +33,26 @@ class BotAnswer(Answer):
     def __init__(self, request: requests.Request) -> None:
 
         def _req() -> Dict[Any, Any]:
-            return request.as_dict().get('message')
+            return request.as_dict()['message']
 
         self._req: Callable[..., Dict[Any, Any]] = _req
 
     def chat_id(self) -> int:
-        return self._req().get('chat').get('id')
+        return self._req()['chat']['id']
 
     def message(self) -> str:
-        return self._req().get('text')
+        return self._req()['text']
 
 
 class BotMessage(Message):
     """A message of a bot."""
 
+    _token: str = '573378765:AAETAPyosmIOs_6Ki_LRDezfnPbS6sFV4Ko'
+
     def __init__(self, chat_id: int, source: str) -> None:
         self._chat_id: int = chat_id
         self._handler: Handler = BotHandler(source)
-        self._request: Request = BotRequest(Url('api.telegram.org/bot', API_KEY, '/sendMessage'))
+        self._request: Request = BotRequest(Url('api.telegram.org/bot', self._token, '/sendMessage'))
 
     def send(self) -> Response:
-        return self._request.post({'chat_id': self._chat_id, 'text': self._handler.perform()})
+        return self._request.post({'chat_id': self._chat_id, 'text': self._handler.text()})

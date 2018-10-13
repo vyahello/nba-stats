@@ -1,7 +1,7 @@
 from abc import abstractmethod, ABC
 from typing import Type, Callable
 from stats.data.games import NbaGames, Games
-from stats.data.scoreboard import YesterdayScoreboard, TodayScoreboard, TomorrowScoreboard, Scoreboard
+from stats.data.scoreboard import YesterdayScoreboard, TodayScoreboard, TomorrowScoreboard
 from stats.league.scoreboard.info import GamesScoresInfo
 from stats.support.tools.date import StampTime
 

@@ -8,22 +8,22 @@ class Handler(ABC):
     """Abstract interface for a handler."""
 
     @abstractmethod
-    def perform(self) -> str:
+    def text(self) -> str:
         pass
 
 
 class BotHandler(Handler):
-    """Represent boxscore handler."""
+    """Represent box score handler."""
 
     def __init__(self, day: str) -> None:
         self._day = day
         self._box_scores: BoxScores = NbaBoxScores(Date(), GamesScoresInfo)
 
-    def perform(self) -> str:
+    def text(self) -> str:
         if self._day == 'yesterday':
             return self._box_scores.yesterday().show()
         elif self._day == 'today':
             return self._box_scores.today().show()
         elif self._day == 'tomorrow':
-            return self._box_scores.today().show()
-        raise ValueError(f'{self._day} day is not supported!')
+            return self._box_scores.tomorrow().show()
+        raise ValueError(f'"{self._day}" day is not supported!')
