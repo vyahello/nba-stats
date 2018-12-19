@@ -34,6 +34,10 @@ class BoxScores(ABC):
     def custom(self, day: str) -> BoxScore:
         pass
 
+    @abstractmethod
+    def empty(self, day: str) -> BoxScore:
+        pass
+
 
 class YesterdayBoxScore(BoxScore):
     """Represent yestarday's scores for a set of games."""
@@ -80,6 +84,17 @@ class CustomBoxScore(BoxScore):
         return f'{len(self._games)} game(s) on {self._day}\n\n {self._info.retrieve()}'
 
 
+class EmptyBoxScore(BoxScore):
+    """The class represents empty box score."""
+
+    def __init__(self, day: str) -> None:
+        self._day = day
+
+    def show(self) -> str:
+        return f'"{self._day}" option is not supported!\n' \
+               f' Please use next options: "/yesterday" or "/today" or "/tomorrow" or custom date "yyyy-mm-dd"'
+
+
 class NbaBoxScores(BoxScores):
     """Represent certain box scores."""
 
@@ -88,6 +103,7 @@ class NbaBoxScores(BoxScores):
         self._today: BoxScore = TodayBoxScore(date, games_info)
         self._tomorrow: BoxScore = TomorrowBoxScore(date, games_info)
         self._custom: Callable[[str], BoxScore] = lambda day: CustomBoxScore(date, day, games_info)
+        self._empty: Callable[[str], BoxScore] = lambda day: EmptyBoxScore(day)
 
     def yesterday(self) -> BoxScore:
         return self._yesterday
@@ -100,3 +116,6 @@ class NbaBoxScores(BoxScores):
 
     def custom(self, day: str) -> BoxScore:
         return self._custom(day)
+
+    def empty(self, day: str) -> BoxScore:
+        return self._empty(day)

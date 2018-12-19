@@ -57,4 +57,4 @@ class BotMessage(Message):
         self._request: Request = BotRequest(Url('https://api.telegram.org', f'bot{self._api_token}', 'sendMessage'))
 
     def send(self) -> Response:
-        return self._request.post({'chat_id': self._chat_id, 'text': self._handler.text()})
+        return self._request.post({'chat_id': self._chat_id, 'text': self._handler.text().show()})
