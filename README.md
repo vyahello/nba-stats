@@ -7,6 +7,9 @@ Run script from the root directory of the project:
 ~ python bot.py
 ```
 
+## Demo
+![Screenshot](stats/artifact/demo.png)
+
 ## Contributing
 
 - clone the repository
