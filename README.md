@@ -4,9 +4,9 @@
 # NBA scoreboards
 > Telegram bot that serves latest nba games statistics.
 
-## Tools/features
-> - python 3.6+
-> - [flask](http://flask.palletsprojects.com)
+**Tools/features**
+- python 3.6+
+- [flask](http://flask.palletsprojects.com)
 
 ## Usage
 Run script from the root directory of the project:
